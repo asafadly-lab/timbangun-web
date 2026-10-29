@@ -35,8 +35,13 @@ html, body {
 /* ============================================================
    SCREEN MANAGEMENT
    ============================================================ */
-.screen { display: none !important; min-height: 100vh; }
-.screen.active { display: block !important; }
+.screen { 
+    display: none !important; 
+    min-height: 100vh; 
+}
+.screen.active { 
+    display: block !important; 
+}
 
 /* ============================================================
    LOGIN SCREEN
