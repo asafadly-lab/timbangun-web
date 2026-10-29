@@ -470,6 +470,9 @@ textarea.form-input {
     display: flex;
     flex-direction: column;
     background: #000;
+    height: 100vh;
+    overflow-y: auto; /* INI KUNCI RAHASIA AGAR BISA DI-SCROLL */
+    -webkit-overflow-scrolling: touch; /* Biar scroll di iOS halus */
 }
 
 .modal-header {
