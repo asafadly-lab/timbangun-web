@@ -548,3 +548,275 @@ function openLeave() {
 function closeLeave() {
     document.getElementById('leaveModal').style.display = 'none';
 }
+
+// ============================================================
+// FASE 2: IZIN / CUTI
+// ============================================================
+function openLeave() {
+    document.getElementById('leaveModal').style.display = 'flex';
+    
+    // Set default date hari ini
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('leaveStart').value = today;
+    document.getElementById('leaveEnd').value = today;
+    
+    document.getElementById('leaveForm').style.display = 'block';
+    document.getElementById('leaveHistoryList').style.display = 'none';
+    document.getElementById('leaveError').textContent = '';
+    document.getElementById('leaveReason').value = '';
+    
+    // Cek validasi surat dokter saat tanggal berubah
+    document.getElementById('leaveType').addEventListener('change', checkDoctorRequirement);
+    document.getElementById('leaveStart').addEventListener('change', checkDoctorRequirement);
+    document.getElementById('leaveEnd').addEventListener('change', checkDoctorRequirement);
+}
+
+function closeLeave() {
+    document.getElementById('leaveModal').style.display = 'none';
+}
+
+function checkDoctorRequirement() {
+    const type = document.getElementById('leaveType').value;
+    const start = new Date(document.getElementById('leaveStart').value);
+    const end = new Date(document.getElementById('leaveEnd').value);
+    const diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+    
+    const wrap = document.getElementById('doctorWrap');
+    if (type === 'SICK' && diffDays > 2) {
+        wrap.style.display = 'block';
+    } else {
+        wrap.style.display = 'none';
+    }
+}
+
+let doctorBase64 = null;
+async function previewDoctor(event) {
+    const file = event.target.files[0];
+    if (!file) { doctorBase64 = null; return; }
+    // Compress
+    try {
+        doctorBase64 = await compressImage(file, 960, 0.7);
+    } catch(e) {
+        alert('Gagal memproses foto surat dokter');
+    }
+}
+
+async function submitLeave() {
+    const type = document.getElementById('leaveType').value;
+    const start = document.getElementById('leaveStart').value;
+    const end = document.getElementById('leaveEnd').value;
+    const reason = document.getElementById('leaveReason').value.trim();
+    const errEl = document.getElementById('leaveError');
+    
+    if (!start || !end || reason.length < 5) {
+        errEl.textContent = 'Lengkapi tanggal dan alasan (min 5 karakter).';
+        return;
+    }
+    
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const diffDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+    
+    if (diffDays < 1) {
+        errEl.textContent = 'Tanggal akhir tidak boleh sebelum tanggal mulai.';
+        return;
+    }
+    
+    if (type === 'SICK' && diffDays > 2 && !doctorBase64) {
+        errEl.textContent = 'Sakit > 2 hari wajib melampirkan surat dokter.';
+        return;
+    }
+
+    const btn = document.getElementById('submitLeaveBtn');
+    btn.textContent = 'MENGIRIM...';
+    btn.disabled = true;
+    errEl.textContent = '';
+    
+    try {
+        const payload = {
+            action: 'submitLeave',
+            token: currentUser.token,
+            leaveType: type,
+            startDate: start,
+            endDate: end,
+            reason: reason
+        };
+        
+        if (doctorBase64) {
+            payload.doctorLetterBase64 = doctorBase64.split(',')[1];
+            payload.doctorLetterMimeType = 'image/jpeg';
+        }
+        
+        const res = await apiCall(payload);
+        if (!res.success) throw new Error(res.message || 'Gagal mengirim izin.');
+        
+        alert('✓ ' + res.message);
+        closeLeave();
+    } catch(e) {
+        errEl.textContent = e.message;
+    } finally {
+        btn.textContent = 'KIRIM PENGAJUAN';
+        btn.disabled = false;
+    }
+}
+
+async function toggleLeaveHistory() {
+    const form = document.getElementById('leaveForm');
+    const hist = document.getElementById('leaveHistoryList');
+    
+    if (form.style.display === 'none') {
+        form.style.display = 'block';
+        hist.style.display = 'none';
+        return;
+    }
+    
+    form.style.display = 'none';
+    hist.style.display = 'block';
+    
+    const container = document.getElementById('leaveHistoryContent');
+    container.innerHTML = 'Memuat...';
+    
+    try {
+        const res = await apiCall({ action: 'myLeaves', token: currentUser.token });
+        if (!res.success) throw new Error(res.message);
+        
+        if (!res.records || res.records.length === 0) {
+            container.innerHTML = '<p style="text-align:center;padding:20px;color:#64748B;">Belum ada pengajuan izin.</p>';
+            return;
+        }
+        
+        container.innerHTML = res.records.map(r => {
+            let statusColor = r.status === 'PENDING' ? '#F59E0B' : (r.status === 'APPROVED' || r.status === 'APPLIED' ? '#10B981' : '#EF4444');
+            let typeLabel = r.leaveType === 'SICK' ? 'Sakit' : (r.leaveType === 'PERSONAL' ? 'Izin Pribadi' : 'Cuti Tahunan');
+            return `
+            <div class="card" style="margin-bottom:10px;padding:15px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                    <strong style="color:#0F172A;">${typeLabel}</strong>
+                    <span style="color:${statusColor};font-size:12px;font-weight:bold;">${r.status}</span>
+                </div>
+                <p style="font-size:12px;color:#64748B;">${r.startDate} s/d ${r.endDate} (${r.totalDays} hari)</p>
+                <p style="font-size:13px;margin-top:5px;color:#0F172A;">Alasan: ${r.reason}</p>
+                ${r.adminNote ? `<p style="font-size:12px;color:#EF4444;margin-top:5px;">Catatan Admin: ${r.adminNote}</p>` : ''}
+            </div>
+            `;
+        }).join('');
+    } catch(e) {
+        container.innerHTML = `<p style="text-align:center;color:#EF4444;">${e.message}</p>`;
+    }
+}
+
+// ============================================================
+// FASE 2: GANTI PASSWORD
+// ============================================================
+function openPasswordModal() {
+    document.getElementById('passwordModal').style.display = 'flex';
+    document.getElementById('oldPassword').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+    document.getElementById('passwordError').textContent = '';
+}
+
+function closePasswordModal() {
+    document.getElementById('passwordModal').style.display = 'none';
+}
+
+async function submitChangePassword() {
+    const oldPw = document.getElementById('oldPassword').value;
+    const newPw = document.getElementById('newPassword').value;
+    const confirmPw = document.getElementById('confirmPassword').value;
+    const errEl = document.getElementById('passwordError');
+    
+    if (!oldPw || !newPw || !confirmPw) {
+        errEl.textContent = 'Lengkapi semua kolom.';
+        return;
+    }
+    if (newPw.length < 8) {
+        errEl.textContent = 'Sandi baru minimal 8 karakter.';
+        return;
+    }
+    if (newPw !== confirmPw) {
+        errEl.textContent = 'Konfirmasi sandi tidak cocok.';
+        return;
+    }
+    
+    const btn = document.getElementById('savePasswordBtn');
+    btn.textContent = 'MENYIMPAN...';
+    btn.disabled = true;
+    errEl.textContent = '';
+    
+    try {
+        const res = await apiCall({
+            action: 'changePassword',
+            token: currentUser.token,
+            oldPassword: oldPw,
+            newPassword: newPw
+        });
+        
+        if (!res.success) throw new Error(res.message);
+        
+        alert('✓ ' + res.message + '\nAnda harus login ulang.');
+        closePasswordModal();
+        handleLogout();
+    } catch(e) {
+        errEl.textContent = e.message;
+    } finally {
+        btn.textContent = 'SIMPAN SANDI BARU';
+        btn.disabled = false;
+    }
+}
+
+// ============================================================
+// FASE 2: PETA PROYEK (LEAFLET)
+// ============================================================
+let leafletMap = null;
+function openMap() {
+    if (!projectInfo) {
+        alert('Belum ada proyek aktif.');
+        return;
+    }
+    document.getElementById('mapModal').style.display = 'flex';
+    document.getElementById('mapProjectName').textContent = projectInfo.projectName;
+    
+    // Info Koordinat
+    document.getElementById('mapLocationInfo').innerHTML = `
+        <p class="location-label">📍 Proyek</p>
+        <p class="location-value" style="color:#0F172A;">${projectInfo.projectName}</p>
+        <p style="font-size:12px;color:#64748B;margin-top:4px;">
+            Radius ${Math.round(projectInfo.radiusMeters)} m
+        </p>
+    `;
+    
+    // Init Map setelah popup tampil
+    setTimeout(() => {
+        if (leafletMap) { leafletMap.remove(); leafletMap = null; }
+        
+        // Pastikan elemen sudah ada
+        const mapEl = document.getElementById('mapArea');
+        mapEl.style.background = '#fff';
+        
+        leafletMap = L.map('mapArea').setView([projectInfo.latitude, projectInfo.longitude], 18);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(leafletMap);
+        
+        // Gambar radius
+        L.circle([projectInfo.latitude, projectInfo.longitude], {
+            color: '#3B82F6',
+            fillColor: '#3B82F6',
+            fillOpacity: 0.2,
+            radius: projectInfo.radiusMeters
+        }).addTo(leafletMap);
+        
+        // Marker
+        L.marker([projectInfo.latitude, projectInfo.longitude])
+            .addTo(leafletMap)
+            .bindPopup(projectInfo.projectName);
+            
+    }, 100);
+}
+
+function closeMap() {
+    document.getElementById('mapModal').style.display = 'none';
+    if (leafletMap) { leafletMap.remove(); leafletMap = null; }
+}
