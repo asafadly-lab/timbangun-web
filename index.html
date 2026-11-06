@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#3B82F6">
     <title>Absensi TIM BANGUN</title>
-    
-    <!-- Leaflet Maps CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,14 +26,8 @@
                     <div class="password-wrapper">
                         <input type="password" id="password" class="form-input" placeholder="Kata Sandi" autocomplete="current-password">
                         <button type="button" class="password-toggle" onclick="togglePassword()">
-                            <svg id="eyeOpen" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            <svg id="eyeClosed" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
-                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                                <line x1="1" y1="1" x2="23" y2="23"/>
-                            </svg>
+                            <svg id="eyeOpen" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg id="eyeClosed" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                         </button>
                     </div>
                 </div>
@@ -52,7 +43,6 @@
 
     <!-- ============ MAIN APP ============ -->
     <div id="mainScreen" class="screen">
-        <!-- Header -->
         <div class="app-header">
             <div class="header-top">
                 <div class="avatar" id="headerAvatar">👤</div>
@@ -62,33 +52,24 @@
                     <p class="header-position" id="headerPosition">-</p>
                 </div>
                 <button class="icon-btn" onclick="refreshHome()" id="refreshBtn">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="23 4 23 10 17 10"/>
-                        <polyline points="1 20 1 14 7 14"/>
-                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-                    </svg>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                 </button>
             </div>
             <h1 class="header-title">Aplikasi Staff<br>TIM BANGUN</h1>
             <p class="header-subtitle">Absensi Karyawan • ASA YANTAMA</p>
         </div>
 
-        <!-- Beranda Content -->
         <div id="homeContent" class="content-scroll">
             <div class="card attendance-card">
                 <div class="card-header">
                     <div class="card-icon icon-blue">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <polyline points="12 6 12 12 16 14"/>
-                        </svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                     </div>
                     <div class="card-title-wrap">
                         <h3 class="card-title">Absensi Hari Ini</h3>
                         <p class="card-subtitle" id="todayDate">-</p>
                     </div>
                 </div>
-
                 <div class="time-grid" id="timeGrid">
                     <div class="time-col">
                         <div class="time-label"><span class="dot dot-in"></span><span>Masuk</span></div>
@@ -100,7 +81,6 @@
                         <p class="time-value" id="checkOutTime">--:--</p>
                     </div>
                 </div>
-
                 <div class="btn-row">
                     <button id="btnMasuk" class="btn btn-success" onclick="openAttendance('in')">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;margin-right:6px;"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
@@ -115,10 +95,7 @@
 
             <div class="card project-card" id="projectCard">
                 <div class="card-icon icon-blue-bg">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                        <circle cx="12" cy="10" r="3"/>
-                    </svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                 </div>
                 <div class="project-info">
                     <p class="project-label">Proyek Aktif</p>
@@ -130,34 +107,25 @@
             <h2 class="section-title">Menu</h2>
             <div class="menu-grid">
                 <div class="menu-card menu-blue" onclick="openMap()">
-                    <div class="menu-icon-wrap">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                    </div>
+                    <div class="menu-icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
                     <div><p class="menu-title">Lokasi</p><p class="menu-subtitle">Proyek</p></div>
                 </div>
                 <div class="menu-card menu-purple" onclick="switchTab('rekap')">
-                    <div class="menu-icon-wrap">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
-                    </div>
+                    <div class="menu-icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></div>
                     <div><p class="menu-title">Rekap</p><p class="menu-subtitle">Bulanan</p></div>
                 </div>
                 <div class="menu-card menu-green" onclick="openLeave()">
-                    <div class="menu-icon-wrap">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    </div>
+                    <div class="menu-icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
                     <div><p class="menu-title">Izin</p><p class="menu-subtitle">Cuti / Sakit</p></div>
                 </div>
                 <div class="menu-card menu-gray" onclick="switchTab('profil')">
-                    <div class="menu-icon-wrap">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    </div>
+                    <div class="menu-icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
                     <div><p class="menu-title">Profil</p><p class="menu-subtitle">Data Akun</p></div>
                 </div>
             </div>
             <p class="footer-text-center">ASA YANTAMA PROJECT 2026</p>
         </div>
 
-        <!-- Rekap Content -->
         <div id="rekapContent" class="content-scroll" style="display:none;">
             <div class="rekap-header">
                 <button class="btn-icon-back" onclick="switchTab('home')">←</button>
@@ -173,7 +141,6 @@
             <div id="rekapList"></div>
         </div>
 
-        <!-- Profil Content -->
         <div id="profilContent" class="content-scroll" style="display:none;">
             <div class="rekap-header">
                 <button class="btn-icon-back" onclick="switchTab('home')">←</button>
@@ -190,16 +157,12 @@
                 <div class="detail-row"><span class="detail-label">Jabatan</span><span class="detail-value" id="detailPosition">-</span></div>
                 <div class="detail-row"><span class="detail-label">Peran</span><span class="detail-value" id="detailRole">-</span></div>
             </div>
-            
             <button class="btn btn-block" style="background:#3B82F6;color:#fff;margin-top:20px;margin-bottom:10px;" onclick="openPasswordModal()">
                 GANTI KATA SANDI
             </button>
-            <button class="btn btn-block btn-outline-red" onclick="handleLogout()">
-                KELUAR
-            </button>
+            <button class="btn btn-block btn-outline-red" onclick="handleLogout()">KELUAR</button>
         </div>
 
-        <!-- Bottom Nav -->
         <div class="bottom-nav">
             <div class="nav-item active" data-tab="home" onclick="switchTab('home')">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -231,20 +194,33 @@
             </div>
             <div class="camera-area" id="cameraArea">
                 <input type="file" id="selfieInput" accept="image/*" capture="user" style="display:none;" onchange="handleSelfieSelected(event)">
-                <button class="btn-camera" onclick="document.getElementById('selfieInput').click()">
+                <button class="btn-camera" id="btnCameraOpen" onclick="document.getElementById('selfieInput').click()">
                     <div class="camera-circle">
                         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
                     </div>
                     <p>Klik untuk ambil selfie</p>
                 </button>
-                <div id="selfiePreview" style="display:none;">
+                <div id="selfiePreview" style="display:none;position:relative;">
                     <img id="selfieImg" src="" alt="Selfie">
+                    <!-- Oval overlay -->
+                    <div id="ovalOverlay" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50%;height:auto;aspect-ratio:1/1.3;border:3px solid rgba(255,255,255,0.7);border-radius:50%;pointer-events:none;"></div>
                 </div>
             </div>
             <div class="modal-body">
+                <div id="radiusWarningCard" style="display:none;margin-bottom:12px;padding:10px;border-radius:10px;">
+                    <p id="radiusWarningText" style="color:#fff;font-size:12px;font-weight:600;"></p>
+                </div>
                 <div id="attendanceLateWrap" style="display:none;">
                     <label class="form-label">Alasan (jika terlambat)</label>
                     <textarea id="lateReason" class="form-input" rows="2" placeholder="Contoh: macet, ban bocor, dll"></textarea>
+                </div>
+                <div id="outOfRadiusWrap" style="display:none;margin-top:10px;">
+                    <label class="form-label" style="color:#FCA5A5;">Alasan di luar radius *</label>
+                    <textarea id="outOfRadiusReason" class="form-input" rows="2" placeholder="Contoh: izin SPV, ambil material, dll"></textarea>
+                </div>
+                <div id="outReasonWrap" style="display:none;margin-top:10px;">
+                    <label class="form-label" style="color:#FCA5A5;">Alasan pulang awal *</label>
+                    <textarea id="outReason" class="form-input" rows="2" placeholder="Contoh: sakit, urusan keluarga, dll"></textarea>
                 </div>
                 <div id="attendanceError" class="error-text"></div>
                 <div id="locationInfo" class="location-info">
@@ -252,7 +228,7 @@
                     <p class="location-value" id="locValue">Menunggu GPS...</p>
                 </div>
                 <button class="btn btn-primary btn-block" id="submitAbsenBtn" onclick="submitAttendance()">
-                    <span id="submitAbsenText">AMBIL SELFIE & ABSEN</span>
+                    <span id="submitAbsenText">KIRIM ABSEN</span>
                     <div id="submitAbsenSpinner" class="spinner" style="display:none;"></div>
                 </button>
             </div>
@@ -264,15 +240,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="icon-btn-dark" onclick="closeMap()">✕</button>
-                <div>
-                    <h3>Lokasi Proyek</h3>
-                    <p class="modal-subtitle" id="mapProjectName">Proyek</p>
-                </div>
+                <div><h3>Lokasi Proyek</h3><p class="modal-subtitle" id="mapProjectName">Proyek</p></div>
             </div>
             <div id="mapArea" style="flex:1;min-height:300px;background:#F1F5F9;"></div>
-            <div class="modal-body">
-                <div id="mapLocationInfo" class="location-info"></div>
-            </div>
+            <div class="modal-body"><div id="mapLocationInfo" class="location-info"></div></div>
         </div>
     </div>
 
@@ -281,13 +252,22 @@
         <div class="modal-content" style="background:#F8FAFC;">
             <div class="modal-header" style="background:#fff;border-bottom:1px solid #E2E8F0;">
                 <button class="icon-btn-dark" onclick="closeLeave()" style="color:#0F172A;">✕</button>
-                <div>
-                    <h3 style="color:#0F172A;">Izin / Cuti</h3>
-                    <p class="modal-subtitle" style="color:#64748B;">Ajukan izin atau cuti</p>
-                </div>
+                <div><h3 style="color:#0F172A;">Izin / Cuti</h3><p class="modal-subtitle" style="color:#64748B;">Ajukan izin atau cuti</p></div>
             </div>
             <div class="modal-body" style="padding:20px;overflow-y:auto;background:#F8FAFC;color:#0F172A;">
                 <div id="leaveForm">
+                    <!-- Saldo Cuti -->
+                    <div id="leaveBalanceCard" style="display:none;background:#EFF6FF;border-radius:16px;padding:16px;margin-bottom:16px;">
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <div style="flex:1;">
+                                <p style="font-size:12px;color:#64748B;">Saldo Cuti Tahunan <span id="leaveBalanceYear">2025</span></p>
+                                <p><span id="leaveBalanceRemaining" style="font-size:28px;font-weight:700;color:#3B82F6;">12</span><span style="font-size:14px;color:#64748B;"> / <span id="leaveBalanceQuota">12</span> hari</span></p>
+                                <p style="font-size:11px;color:#64748B;">Terpakai: <span id="leaveBalanceUsed">0</span> hari</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="form-label">Jenis Izin</label>
                         <select id="leaveType" class="form-input">
@@ -297,39 +277,24 @@
                         </select>
                     </div>
                     <div style="display:flex;gap:10px;">
-                        <div class="form-group" style="flex:1;">
-                            <label class="form-label">Mulai</label>
-                            <input type="date" id="leaveStart" class="form-input">
-                        </div>
-                        <div class="form-group" style="flex:1;">
-                            <label class="form-label">Selesai</label>
-                            <input type="date" id="leaveEnd" class="form-input">
-                        </div>
+                        <div class="form-group" style="flex:1;"><label class="form-label">Mulai</label><input type="date" id="leaveStart" class="form-input"></div>
+                        <div class="form-group" style="flex:1;"><label class="form-label">Selesai</label><input type="date" id="leaveEnd" class="form-input"></div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Alasan (min 5 karakter)</label>
                         <textarea id="leaveReason" class="form-input" rows="3" placeholder="Jelaskan alasan izin/cuti..."></textarea>
                     </div>
-                    
                     <div id="doctorWrap" style="display:none; margin-bottom:15px;">
                         <label class="form-label" style="color:#EF4444; font-weight:bold;">Surat Dokter (Wajib untuk Sakit > 2 hari)</label>
                         <input type="file" id="doctorInput" accept="image/*" class="form-input" onchange="previewDoctor(event)" style="padding:10px;">
                     </div>
-
                     <div id="leaveError" class="error-text"></div>
-                    <button class="btn btn-primary btn-block" id="submitLeaveBtn" onclick="submitLeave()">
-                        KIRIM PENGAJUAN
-                    </button>
-                    
-                    <button class="btn btn-block" style="background:transparent;color:#3B82F6;margin-top:10px;" onclick="toggleLeaveHistory()">
-                        Lihat Riwayat Izin
-                    </button>
+                    <button class="btn btn-primary btn-block" id="submitLeaveBtn" onclick="submitLeave()">KIRIM PENGAJUAN</button>
+                    <button class="btn btn-block" style="background:transparent;color:#3B82F6;margin-top:10px;" onclick="toggleLeaveHistory()">Lihat Riwayat Izin</button>
                 </div>
 
                 <div id="leaveHistoryList" style="display:none;">
-                    <button class="btn btn-block" style="background:#E2E8F0;color:#0F172A;margin-bottom:15px;" onclick="toggleLeaveHistory()">
-                        ← Kembali ke Form
-                    </button>
+                    <button class="btn btn-block" style="background:#E2E8F0;color:#0F172A;margin-bottom:15px;" onclick="toggleLeaveHistory()">← Kembali ke Form</button>
                     <div id="leaveHistoryContent">Memuat data...</div>
                 </div>
             </div>
@@ -341,43 +306,22 @@
         <div class="modal-content" style="background:#F8FAFC;">
             <div class="modal-header" style="background:#fff;border-bottom:1px solid #E2E8F0;">
                 <button class="icon-btn-dark" onclick="closePasswordModal()" style="color:#0F172A;">✕</button>
-                <div>
-                    <h3 style="color:#0F172A;">Ganti Kata Sandi</h3>
-                </div>
+                <div><h3 style="color:#0F172A;">Ganti Kata Sandi</h3></div>
             </div>
             <div class="modal-body" style="padding:20px;background:#F8FAFC;color:#0F172A;">
-                <div class="form-group">
-                    <label class="form-label">Sandi Lama</label>
-                    <input type="password" id="oldPassword" class="form-input">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Sandi Baru (min 8 karakter)</label>
-                    <input type="password" id="newPassword" class="form-input">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Konfirmasi Sandi Baru</label>
-                    <input type="password" id="confirmPassword" class="form-input">
-                </div>
+                <div class="form-group"><label class="form-label">Sandi Lama</label><input type="password" id="oldPassword" class="form-input"></div>
+                <div class="form-group"><label class="form-label">Sandi Baru (min 8 karakter)</label><input type="password" id="newPassword" class="form-input"></div>
+                <div class="form-group"><label class="form-label">Konfirmasi Sandi Baru</label><input type="password" id="confirmPassword" class="form-input"></div>
                 <div id="passwordError" class="error-text"></div>
-                <button class="btn btn-primary btn-block" id="savePasswordBtn" onclick="submitChangePassword()">
-                    SIMPAN SANDI BARU
-                </button>
+                <button class="btn btn-primary btn-block" id="savePasswordBtn" onclick="submitChangePassword()">SIMPAN SANDI BARU</button>
             </div>
         </div>
     </div>
 
-    <!-- ============ GLOBAL LOADING ============ -->
-    <div id="globalLoading" class="global-loading" style="display:none;">
-        <div class="spinner-large"></div>
-        <p id="globalLoadingText">Memproses...</p>
-    </div>
-
-    <!-- ============ TOAST ============ -->
+    <div id="globalLoading" class="global-loading" style="display:none;"><div class="spinner-large"></div><p id="globalLoadingText">Memproses...</p></div>
     <div id="toast" class="toast" style="display:none;"></div>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
     <script src="app.js"></script>
 </body>
 </html>
